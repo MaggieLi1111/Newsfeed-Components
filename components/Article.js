@@ -90,27 +90,97 @@ const data = [
 ];
 
 /*
-  Step 1: Write a component called 'articleMaker' to create an article.
-  Your component is a function that takes an article object as its only argument,
-  and returns a DOM node looking like the one below:
+Step 1: Write a component called 'articleMaker' to create an article.
+Your component is a function that takes an article object as its only argument,
+and returns a DOM node looking like the one below:
 
-  <div class="article">
-    <h2>{title of the article}</h2>
-    <p class="date">{date of the article}</p>
+<div class="article">
+  <h2>{title of the article}</h2>
+  <p class="date">{date of the article}</p>
 
-    {three separate paragraph elements}
+  {three separate paragraph elements}
 
-    <span class="expandButton">+</span>
-  </div>
+  <span class="expandButton">+</span>
+</div>
+*/
 
-  Step 2: Still inside `articleMaker`, add an event listener to the span.expandButton.
-  This listener should toggle the class 'article-open' on div.article.
+function articleMaker({ title, date, firstParagraph, secondParagraph, thirdParagraph }) {
 
-  Step 3: Don't forget to return something from your function!
+  const article = document.createElement("div");
+  const articleTitle = document.createElement("h2");
+  const articleDate = document.createElement("p");
+  const articleContent1 = document.createElement("p");
+  const articleContent2 = document.createElement("p");
+  const articleContent3 = document.createElement("p");
+  const expandButton = document.createElement("span");
 
-  Step 4: Outside your function now, loop over the data. At each iteration you'll use your component
-  to create a div.article element and append it to the DOM inside div.articles (see index.html).
+  article.appendChild(articleTitle);
+  article.appendChild(articleDate);
+  article.appendChild(articleContent1);
+  article.appendChild(articleContent2);
+  article.appendChild(articleContent3);
+  article.appendChild(expandButton);
 
-  Step 5: Try adding new article object to the data array. Make sure it is in the same format as the others.
+  article.classList.add("article");
+  articleDate.classList.add("date");
+  expandButton.classList.add("expandButton");
+
+  articleTitle.textContent = title;
+  articleDate.textContent = date;
+  articleContent1.textContent = firstParagraph;
+  articleContent2.textContent = secondParagraph;
+  articleContent3.textContent = thirdParagraph;
+  expandButton.textContent = "+";
+
+  /*  Step 2: Still inside `articleMaker`, add an event listener to the span.expandButton.
+    This listener should toggle the class 'article-open' on div.article.*/
+  expandButton.addEventListener("click", () => {
+    article.classList.toggle("article-open");
+  })
+
+
+  /*  Step 3: Don't forget to return something from your function!
+    */
+
+  return article;
+}
+/*Step 4: Outside your function now, loop over the data. At each iteration you'll use your component
+to create a div.article element and append it to the DOM inside div.articles (see index.html).*/
+
+/*  Step 5: Try adding new article object to the data array. Make sure it is in the same format as the others.
   Refresh the page to see the new article.
 */
+
+const articles = document.querySelector(".articles");
+data.forEach(item => {
+  const elem = articleMaker(item);
+  articles.appendChild(elem);
+})
+
+
+
+
+const addButton = document.createElement("button");
+addButton.classList.add("article");
+addButton.textContent ="Add new article";
+articles.appendChild(addButton);
+
+addButton.addEventListener("click", makeNewArticle);
+function makeNewArticle(){
+  const title = prompt("Please write your title");
+  const date = prompt("Please add Date");
+  const firstParagraph = prompt("first paragraph");
+  const secondParagraph = prompt("second paragraph");
+  const thirdParagraph = prompt("third paragraph");
+
+  const object = {
+    title:title,
+    date:date,
+    firstParagraph:firstParagraph,
+    secondParagraph:secondParagraph,
+    thirdParagraph:thirdParagraph
+  }
+  return object;
+}
+const newArticle = articleMaker(object);
+articles.appendChild(newArticle);
